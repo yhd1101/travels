@@ -1,26 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Question } from './entities/question.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class QuestionService {
-  create(createQuestionDto: CreateQuestionDto) {
-    return 'This action adds a new question';
+  constructor(
+    @InjectRepository(Question)
+    private questionRepository: Repository<Question>,
+  ) {}
+
+  async questionCreate(createQuestionDto: CreateQuestionDto) {
+    const newQuestion = await this.questionRepository.create(createQuestionDto);
+    await this.questionRepository.save(newQuestion);
+    return newQuestion;
+  }
+  //전체
+  async questionGetAll() {
+    const questions = await this.questionRepository.find();
+    return { count: questions.length, questions };
   }
 
-  findAll() {
-    return `This action returns all question`;
+  async questionGetById(id: string) {
+    const question = await this.questionRepository.findOneBy({ id });
+    if (!question) {
+      throw new HttpException('No id', HttpStatus.NOT_FOUND);
+    }
+    return question;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} question`;
+  async questionDeleteById(id: string) {
+    await this.questionRepository.delete({ id });
+    return 'deleted question';
   }
 
-  update(id: number, updateQuestionDto: UpdateQuestionDto) {
-    return `This action updates a #${id} question`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} question`;
+  async questionUpdateById(id: string, createQuestionDto: CreateQuestionDto) {
+    await this.questionRepository.update(id, createQuestionDto);
+    return 'updated question';
   }
 }
