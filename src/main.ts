@@ -1,19 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger';
+import { BaseApIDocument } from './common/config/swagger.document';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  //swager설정
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Travel Survey')
-    .setDescription('public Travel Survey')
-    .setVersion('1.0')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  const config = new BaseApIDocument().initializeOptions();
+  const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
   const configService = app.get(ConfigService);

@@ -8,19 +8,11 @@ import { QuestionModule } from './question/question.module';
 import { OptionsModule } from './options/options.module';
 import { AnswerModule } from './answer/answer.module';
 import * as Joi from '@hapi/joi';
+import { AppConfigModule } from './common/config/config.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env',
-      validationSchema: Joi.object({
-        POSTGRES_HOST: Joi.string().required(),
-        POSTGRES_PORT: Joi.number().required(),
-        POSTGRES_USERNAME: Joi.string().required(),
-        POSTGRES_PASSWORD: Joi.string().required(),
-        POSTGRES_DB: Joi.string().required(),
-      }),
-    }),
+    AppConfigModule,
     DatabaseModule,
     SurveyModule,
     QuestionModule,

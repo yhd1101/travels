@@ -1,1 +1,4 @@
-export class CreateSurveyDto {}
+export class CreateSurveyDto {
+  name: string;
+  desc: string;
+}
