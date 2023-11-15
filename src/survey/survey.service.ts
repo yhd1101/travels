@@ -5,6 +5,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Survey } from './entities/survey.entity';
 import { Repository } from 'typeorm';
 import { Question } from '../question/entities/question.entity';
+import { PageOptionsDto } from '../common/dtos/page-options.dto';
+import { PageMetaDto } from '../common/dtos/page-meta.dto';
+import { PageDto } from '../common/dtos/page.dto';
 
 @Injectable()
 export class SurveyService {
@@ -14,9 +17,21 @@ export class SurveyService {
   ) {}
 
   //전체
-  async surveyGetAll() {
-    const surveys = await this.surveyRepository.find();
-    return { count: surveys.length, surveys };
+  async surveyGetAll(pageOptionsDto: PageOptionsDto) {
+    const queryBuilder =
+      await this.surveyRepository.createQueryBuilder('survey');
+    queryBuilder.leftJoinAndSelect('survey.questions', 'questions');
+
+    await queryBuilder
+      .orderBy('survey.createdAt', pageOptionsDto.order)
+      .skip(pageOptionsDto.skip)
+      .take(pageOptionsDto.take);
+
+    const itemCount = await queryBuilder.getCount();
+    const { entities } = await queryBuilder.getRawAndEntities();
+
+    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+    return new PageDto(entities, pageMetaDto);
   }
 
   async surveyCreate(createSurveyDto: CreateSurveyDto) {
@@ -28,7 +43,11 @@ export class SurveyService {
 
   //특정 설문지 불라오기
   async surveyGetById(id: string) {
-    const survey = await this.surveyRepository.findOneBy({ id });
+    const survey = await this.surveyRepository
+      .createQueryBuilder('survey')
+      .leftJoinAndSelect('survey.questions', 'questions')
+      .where('survey.id= :id', { id })
+      .getOne();
     if (!survey) {
       throw new HttpException('No id', HttpStatus.NOT_FOUND);
     }

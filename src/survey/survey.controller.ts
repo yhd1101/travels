@@ -14,6 +14,7 @@ import { SurveyService } from './survey.service';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { UpdateSurveyDto } from './dto/update-survey.dto';
 import { Question } from '../question/entities/question.entity';
+import { PageOptionsDto } from '../common/dtos/page-options.dto';
 
 @Controller('survey')
 export class SurveyController {
@@ -21,9 +22,11 @@ export class SurveyController {
 
   //전체불러오기
   @Get()
-  async getAllSurvey() {
-    const survey = await this.surveyService.surveyGetAll();
-    return survey;
+  async getAllSurvey(@Query() pageOptionsDto: PageOptionsDto) {
+    // const survey = await this.surveyService.surveyGetAll();
+    // return survey;
+
+    return await this.surveyService.surveyGetAll(pageOptionsDto);
   }
 
   @Post('/create')
