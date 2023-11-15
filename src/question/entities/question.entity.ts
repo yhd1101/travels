@@ -1,32 +1,13 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { CommonEntity } from '../../common/entities/common.entity';
+import { Survey } from '../../survey/entities/survey.entity';
 
 @Entity()
 export class Question extends CommonEntity {
   @Column()
-  public question1: string;
+  public question: string;
 
-  @Column()
-  public question2: string;
-
-  @Column()
-  public question3: string;
-
-  @Column()
-  public question4: string;
-
-  @Column()
-  public question5: string;
-
-  @Column()
-  public question6: string;
-
-  @Column()
-  public question7: string;
-
-  @Column()
-  public question8: string;
-
-  @Column()
-  public question9: string;
+  @ManyToOne(() => Survey, (survey: Survey) => survey.questions)
+  @JoinColumn({ referencedColumnName: 'id' })
+  public survey: Survey;
 }

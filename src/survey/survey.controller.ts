@@ -7,10 +7,13 @@ import {
   Param,
   Delete,
   Put,
+  Req,
+  Query,
 } from '@nestjs/common';
 import { SurveyService } from './survey.service';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { UpdateSurveyDto } from './dto/update-survey.dto';
+import { Question } from '../question/entities/question.entity';
 
 @Controller('survey')
 export class SurveyController {

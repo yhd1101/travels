@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,12 +19,17 @@ export class QuestionService {
   }
   //전체
   async questionGetAll() {
-    const questions = await this.questionRepository.find();
+    const questions = await this.questionRepository.find({
+      relations: ['survey'],
+    });
     return { count: questions.length, questions };
   }
 
   async questionGetById(id: string) {
-    const question = await this.questionRepository.findOneBy({ id });
+    const question = await this.questionRepository.findOne({
+      where: { id },
+      relations: ['survey'],
+    });
     if (!question) {
       throw new HttpException('No id', HttpStatus.NOT_FOUND);
     }

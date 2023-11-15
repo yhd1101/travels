@@ -4,6 +4,7 @@ import { UpdateSurveyDto } from './dto/update-survey.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Survey } from './entities/survey.entity';
 import { Repository } from 'typeorm';
+import { Question } from '../question/entities/question.entity';
 
 @Injectable()
 export class SurveyService {
@@ -20,6 +21,7 @@ export class SurveyService {
 
   async surveyCreate(createSurveyDto: CreateSurveyDto) {
     const newSurvey = await this.surveyRepository.create(createSurveyDto);
+    console.log(newSurvey);
     await this.surveyRepository.save(newSurvey);
     return newSurvey;
   }
