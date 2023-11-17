@@ -55,6 +55,28 @@ export class SurveyService {
     return survey;
   }
 
+  async completeSurvey(
+    createSurveyDto: CreateSurveyDto,
+    pageOptionsDto: PageOptionsDto,
+  ) {
+    if (createSurveyDto.completed === true) {
+      const queryBuilder =
+        await this.surveyRepository.createQueryBuilder('survey');
+      queryBuilder.leftJoinAndSelect('survey.questions', 'questions');
+
+      await queryBuilder
+        .orderBy('survey.createdAt', pageOptionsDto.order)
+        .skip(pageOptionsDto.skip)
+        .take(pageOptionsDto.take);
+
+      const itemCount = await queryBuilder.getCount();
+      const { entities } = await queryBuilder.getRawAndEntities();
+
+      const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+      return new PageDto(entities, pageMetaDto);
+    }
+  }
+
   async surveyDeletedById(id: string) {
     await this.surveyRepository.delete({ id });
     return 'deleted survey';

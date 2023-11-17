@@ -1,1 +1,3 @@
-export class CreateAnswerDto {}
+export class CreateAnswerDto {
+  answer: number;
+}

@@ -11,4 +11,9 @@ export class Survey extends CommonEntity {
 
   @OneToMany(() => Question, (question: Question) => question.survey)
   public questions: Question[];
+
+  @Column({
+    default: false,
+  })
+  public completed: boolean;
 }

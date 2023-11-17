@@ -1,11 +1,20 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { CommonEntity } from '../../common/entities/common.entity';
+import { Question } from '../../question/entities/question.entity';
+import { Provider } from './provier.enum';
 
 @Entity()
 export class Answer extends CommonEntity {
   @Column()
-  public answer4: number;
+  public answer: number;
 
-  @Column()
-  public answer9: number;
+  @OneToOne(() => Question, (question: Question) => question.answer)
+  @JoinColumn()
+  public question: Question;
+
+  @Column({
+    type: 'enum',
+    enum: Provider,
+  })
+  public score = Provider;
 }
