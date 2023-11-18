@@ -17,9 +17,4 @@ export class CreateSurveyDto {
   @IsString()
   @IsNotEmpty()
   desc: string;
-
-  @ApiProperty({
-    description: 'insert complete',
-  })
-  completed: boolean;
 }

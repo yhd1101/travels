@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateAnswerDto } from './dto/create-answer.dto';
-import { UpdateAnswerDto } from './dto/update-answer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Answer } from './entities/answer.entity';
 import { Repository } from 'typeorm';
@@ -10,23 +9,37 @@ export class AnswerService {
   constructor(
     @InjectRepository(Answer) private answerRepository: Repository<Answer>,
   ) {}
-  create(createAnswerDto: CreateAnswerDto) {
-    return 'This action adds a new answer';
+
+  async getAllAnswerList() {
+    const answers = await this.answerRepository.find({
+      relations: ['question', 'answer'],
+    });
+    return { count: answers.length, answers };
   }
 
-  findAll() {
-    return `This action returns all answer`;
+  async createAnswer(createAnswerDto: CreateAnswerDto) {
+    const newAnswer = await this.answerRepository.create(createAnswerDto);
+    await this.answerRepository.save(newAnswer);
+    return newAnswer;
+  }
+  async getByAnswerId(id: string) {
+    const answer = await this.answerRepository.findOne({
+      where: { id },
+      relations: ['question', 'answer'],
+    });
+    if (!answer) {
+      throw new HttpException('No answer', HttpStatus.NOT_FOUND);
+    }
+    return answer;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} answer`;
+  async updatedByAnswerId(id: string, updateAnswerDto: CreateAnswerDto) {
+    await this.answerRepository.update(id, updateAnswerDto);
+    return 'updated answer';
   }
 
-  update(id: number, updateAnswerDto: UpdateAnswerDto) {
-    return `This action updates a #${id} answer`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} answer`;
+  async deleteByAnswer(id: string) {
+    await this.answerRepository.delete({ id });
+    return 'deleted answer';
   }
 }

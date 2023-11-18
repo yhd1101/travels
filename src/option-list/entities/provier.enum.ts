@@ -1,4 +1,4 @@
-export enum Provider {
+export enum Provier {
   ZERO = 0,
   ONE = 1,
   TWO = 2,

@@ -36,12 +36,11 @@ export class SurveyController {
   }
 
   //완료된 설문지
-  @Get()
+  @Get('/complete')
   @ApiOperation({ summary: '완료된 설문지', description: '완료된 설문지조회' })
-  async completeSurvey(
-    @Body() createSurveyDto: CreateSurveyDto,
-    @Query() pageOptionsDto: PageOptionsDto,
-  ) {}
+  async completeSurvey() {
+    return await this.surveyService.completeSurvey();
+  }
 
   @Post('/create')
   @ApiOperation({ summary: '설문지 Create', description: '설문지생성' })

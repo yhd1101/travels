@@ -54,27 +54,51 @@ export class SurveyService {
 
     return survey;
   }
+  //
+  // async completeSurvey(
+  //   createSurveyDto: CreateSurveyDto,
+  //   pageOptionsDto: PageOptionsDto,
+  // ) {
+  //   if (createSurveyDto.completed === true) {
+  //     const queryBuilder =
+  //       await this.surveyRepository.createQueryBuilder('survey');
+  //     queryBuilder.leftJoinAndSelect('survey.questions', 'questions');
+  //
+  //     await queryBuilder
+  //       .orderBy('survey.createdAt', pageOptionsDto.order)
+  //       .skip(pageOptionsDto.skip)
+  //       .take(pageOptionsDto.take);
+  //
+  //     const itemCount = await queryBuilder.getCount();
+  //     const { entities } = await queryBuilder.getRawAndEntities();
+  //
+  //     const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+  //     return new PageDto(entities, pageMetaDto);
+  //   } else {
+  //     return 'No Complete Survey';
+  //   }
+  // }
 
-  async completeSurvey(
-    createSurveyDto: CreateSurveyDto,
-    pageOptionsDto: PageOptionsDto,
-  ) {
-    if (createSurveyDto.completed === true) {
-      const queryBuilder =
-        await this.surveyRepository.createQueryBuilder('survey');
-      queryBuilder.leftJoinAndSelect('survey.questions', 'questions');
-
-      await queryBuilder
-        .orderBy('survey.createdAt', pageOptionsDto.order)
-        .skip(pageOptionsDto.skip)
-        .take(pageOptionsDto.take);
-
-      const itemCount = await queryBuilder.getCount();
-      const { entities } = await queryBuilder.getRawAndEntities();
-
-      const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
-      return new PageDto(entities, pageMetaDto);
-    }
+  async completeSurvey() {
+    const completed = true;
+    return await this.surveyRepository.findOneBy({ completed });
+    // if (createSurveyDto.completed === true) {
+    //   const queryBuilder = this.surveyRepository.createQueryBuilder('survey');
+    //   queryBuilder.leftJoinAndSelect('survey.questions', 'questions');
+    //
+    //   queryBuilder
+    //     .orderBy('survey.createdAt', pageOptionsDto.order)
+    //     .skip(pageOptionsDto.skip)
+    //     .take(pageOptionsDto.take);
+    //
+    //   const entities = await queryBuilder.getMany();
+    //   const itemCount = await queryBuilder.getCount();
+    //
+    //   const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+    //   return new PageDto(entities, pageMetaDto);
+    // } else {
+    //   return 'No Complete Survey';
+    // }
   }
 
   async surveyDeletedById(id: string) {

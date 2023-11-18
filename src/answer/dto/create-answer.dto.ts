@@ -1,3 +1,7 @@
+import { Question } from '../../question/entities/question.entity';
+import { OptionList } from '../../option-list/entities/option-list.entity';
+
 export class CreateAnswerDto {
-  answer: number;
+  question: Question;
+  answer: OptionList;
 }
