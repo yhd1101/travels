@@ -1,6 +1,6 @@
 import { Question } from '../../question/entities/question.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateSurveyDto {
   @ApiProperty({
@@ -17,4 +17,11 @@ export class CreateSurveyDto {
   @IsString()
   @IsNotEmpty()
   desc: string;
+
+  @ApiProperty({
+    description: 'completed',
+    default: false,
+  })
+  @IsBoolean()
+  completed: boolean;
 }
