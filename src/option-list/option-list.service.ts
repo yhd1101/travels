@@ -20,7 +20,7 @@ export class OptionListService {
 
   async getAllOptionsList() {
     const optionList = await this.optionListRepository.find({
-      relations: ['question'],
+      relations: ['question', 'answer'],
     });
     return { count: optionList.length, optionList };
   }

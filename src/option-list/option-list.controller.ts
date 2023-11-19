@@ -6,11 +6,13 @@ import {
   Param,
   Delete,
   Put,
+  NotFoundException,
 } from '@nestjs/common';
 import { OptionListService } from './option-list.service';
 import { CreateOptionListDto } from './dto/create-option-list.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Option')
 @Controller('options')
 export class OptionListController {
   constructor(private readonly optionListService: OptionListService) {}
@@ -33,8 +35,12 @@ export class OptionListController {
   @Get(':id')
   @ApiOperation({ summary: '문제항목 상세로 불러오기' })
   async getOptionById(@Param('id') id: string) {
-    const option = await this.optionListService.getByOptionId(id);
-    return option;
+    try {
+      const option = await this.optionListService.getByOptionId(id);
+      return option;
+    } catch (err) {
+      throw new NotFoundException('Option not found');
+    }
   }
 
   @Put(':id')
@@ -43,16 +49,24 @@ export class OptionListController {
     @Body() createOptionListDto: CreateOptionListDto,
     @Param('id') id: string,
   ) {
-    return await this.optionListService.updatedByOptionId(
-      id,
-      createOptionListDto,
-    );
+    try {
+      return await this.optionListService.updatedByOptionId(
+        id,
+        createOptionListDto,
+      );
+    } catch (err) {
+      throw new NotFoundException('Option not found');
+    }
   }
 
   @Delete(':id')
   @ApiOperation({ summary: '문제항목 삭제' })
   async deleteOptionById(@Param('id') id: string) {
-    const option = await this.optionListService.deleteByOptionId(id);
-    return option;
+    try {
+      const option = await this.optionListService.deleteByOptionId(id);
+      return option;
+    } catch (err) {
+      throw new NotFoundException('Option not found');
+    }
   }
 }

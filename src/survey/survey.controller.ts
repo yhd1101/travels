@@ -9,6 +9,7 @@ import {
   Put,
   Req,
   Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { SurveyService } from './survey.service';
 import { CreateSurveyDto } from './dto/create-survey.dto';
@@ -38,8 +39,8 @@ export class SurveyController {
   //완료된 설문지
   @Get('/complete')
   @ApiOperation({ summary: '완료된 설문지', description: '완료된 설문지조회' })
-  async completeSurvey() {
-    return await this.surveyService.completeSurvey();
+  async completeSurvey(@Query() pageOptionsDto: PageOptionsDto) {
+    return await this.surveyService.completeSurvey(pageOptionsDto);
   }
 
   @Post('/create')
@@ -55,23 +56,35 @@ export class SurveyController {
     description: '설문지 상세페이지',
   })
   async getSurveyById(@Param('id') id: string) {
-    const survey = await this.surveyService.surveyGetById(id);
-    return survey;
+    try {
+      const survey = await this.surveyService.surveyGetById(id);
+      return survey;
+    } catch (err) {
+      throw new NotFoundException('Survey Not Found');
+    }
   }
 
-  @Put(':id')
+  @Patch(':id')
   @ApiOperation({ summary: '설문지 Update', description: '설문지를 수정함' })
   async updateSurveyById(
     @Body() createSurveyDto: CreateSurveyDto,
     @Param('id') id: string,
   ) {
-    return await this.surveyService.surveyUpdatedById(id, createSurveyDto);
+    try {
+      return await this.surveyService.surveyUpdatedById(id, createSurveyDto);
+    } catch (err) {
+      throw new NotFoundException('Survey Not Found');
+    }
   }
 
   @Delete(':id')
   @ApiOperation({ summary: '설문지 Delete', description: '설문지삭제' })
   async deletedSurveyById(@Param('id') id: string) {
-    const survey = await this.surveyService.surveyDeletedById(id);
-    return survey;
+    try {
+      const survey = await this.surveyService.surveyDeletedById(id);
+      return survey;
+    } catch (err) {
+      throw new NotFoundException('Survey Not Found');
+    }
   }
 }

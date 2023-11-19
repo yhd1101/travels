@@ -6,11 +6,13 @@ import {
   Param,
   Delete,
   Put,
+  NotFoundException,
 } from '@nestjs/common';
 import { AnswerService } from './answer.service';
 import { CreateAnswerDto } from './dto/create-answer.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Answer')
 @Controller('answer')
 export class AnswerController {
   constructor(private readonly answerService: AnswerService) {}
@@ -32,8 +34,12 @@ export class AnswerController {
   @Get(':id')
   @ApiOperation({ summary: '정답 불러오기' })
   async getAnswer(@Param('id') id: string) {
-    const answer = await this.answerService.getByAnswerId(id);
-    return answer;
+    try {
+      const answer = await this.answerService.getByAnswerId(id);
+      return answer;
+    } catch (err) {
+      throw new NotFoundException('answer not found');
+    }
   }
 
   @Put(':id')
@@ -42,17 +48,25 @@ export class AnswerController {
     @Param('id') id: string,
     @Body() createAnswerDto: CreateAnswerDto,
   ) {
-    const answer = await this.answerService.updatedByAnswerId(
-      id,
-      createAnswerDto,
-    );
-    return answer;
+    try {
+      const answer = await this.answerService.updatedByAnswerId(
+        id,
+        createAnswerDto,
+      );
+      return answer;
+    } catch (err) {
+      throw new NotFoundException('answer not found');
+    }
   }
 
   @Delete(':id')
   @ApiOperation({ summary: '정답삭제' })
   async deleteAnswer(@Param('id') id: string) {
-    const answer = await this.answerService.deleteByAnswer(id);
-    return answer;
+    try {
+      const answer = await this.answerService.deleteByAnswer(id);
+      return answer;
+    } catch (err) {
+      throw new NotFoundException('answer not found');
+    }
   }
 }

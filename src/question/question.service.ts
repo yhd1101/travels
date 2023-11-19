@@ -19,7 +19,7 @@ export class QuestionService {
   //전체
   async questionGetAll() {
     const questions = await this.questionRepository.find({
-      relations: ['survey'],
+      relations: ['survey', 'optionList', 'answer.question', 'answer.answer'],
     });
     return { count: questions.length, questions };
   }

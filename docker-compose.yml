@@ -2,18 +2,24 @@ version: "3"
 services:
   nestjs_api:
     build:
+      context: .
       dockerfile: Dockerfile
-      context: Backend
+      # Only will build development stage from our dockerfile
       target: development
     volumes:
-      - ./Backend:/usr/src/app
+      - .:/usr/src/app
     env_file:
-      - ./Backend/.env
+      - .env
+    # Run a command against the development stage of the image
     command: npm run start:dev
     ports:
-      - 8000:8000
+      - 4000:4000
+    depends_on:
+      - postgres
+
     networks:
       - travel-network
+
 
   postgres:
     container_name: postgres

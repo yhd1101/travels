@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Put,
+  NotFoundException,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
@@ -34,8 +35,12 @@ export class QuestionController {
   @Get(':id')
   @ApiOperation({ summary: '문제 id 조회', description: '문제 id 조회' })
   async getQuestionById(@Param('id') id: string) {
-    const question = await this.questionService.questionGetById(id);
-    return question;
+    try {
+      const question = await this.questionService.questionGetById(id);
+      return question;
+    } catch (err) {
+      throw new NotFoundException('Question not found');
+    }
   }
 
   @Put(':id')
@@ -44,13 +49,24 @@ export class QuestionController {
     @Body() createQuestionDto: CreateQuestionDto,
     @Param('id') id: string,
   ) {
-    return await this.questionService.questionUpdateById(id, createQuestionDto);
+    try {
+      return await this.questionService.questionUpdateById(
+        id,
+        createQuestionDto,
+      );
+    } catch (err) {
+      throw new NotFoundException('Question not found');
+    }
   }
 
   @Delete(':id')
   @ApiOperation({ summary: '문제 삭제', description: '문제 삭제' })
   async deleteQuestionById(@Param('id') id: string) {
-    const question = await this.questionService.questionDeleteById(id);
-    return question;
+    try {
+      const question = await this.questionService.questionDeleteById(id);
+      return question;
+    } catch (err) {
+      throw new NotFoundException('Question not found');
+    }
   }
 }
