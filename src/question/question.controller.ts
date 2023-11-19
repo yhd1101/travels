@@ -35,12 +35,8 @@ export class QuestionController {
   @Get(':id')
   @ApiOperation({ summary: '문제 id 조회', description: '문제 id 조회' })
   async getQuestionById(@Param('id') id: string) {
-    try {
-      const question = await this.questionService.questionGetById(id);
-      return question;
-    } catch (err) {
-      throw new NotFoundException('Question not found');
-    }
+    const question = await this.questionService.questionGetById(id);
+    return question;
   }
 
   @Put(':id')
@@ -49,24 +45,13 @@ export class QuestionController {
     @Body() createQuestionDto: CreateQuestionDto,
     @Param('id') id: string,
   ) {
-    try {
-      return await this.questionService.questionUpdateById(
-        id,
-        createQuestionDto,
-      );
-    } catch (err) {
-      throw new NotFoundException('Question not found');
-    }
+    return await this.questionService.questionUpdateById(id, createQuestionDto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: '문제 삭제', description: '문제 삭제' })
   async deleteQuestionById(@Param('id') id: string) {
-    try {
-      const question = await this.questionService.questionDeleteById(id);
-      return question;
-    } catch (err) {
-      throw new NotFoundException('Question not found');
-    }
+    const question = await this.questionService.questionDeleteById(id);
+    return question;
   }
 }

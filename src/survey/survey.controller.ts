@@ -56,12 +56,8 @@ export class SurveyController {
     description: '설문지 상세페이지',
   })
   async getSurveyById(@Param('id') id: string) {
-    try {
-      const survey = await this.surveyService.surveyGetById(id);
-      return survey;
-    } catch (err) {
-      throw new NotFoundException('Survey Not Found');
-    }
+    const survey = await this.surveyService.surveyGetById(id);
+    return survey;
   }
 
   @Patch(':id')
@@ -70,21 +66,13 @@ export class SurveyController {
     @Body() createSurveyDto: CreateSurveyDto,
     @Param('id') id: string,
   ) {
-    try {
-      return await this.surveyService.surveyUpdatedById(id, createSurveyDto);
-    } catch (err) {
-      throw new NotFoundException('Survey Not Found');
-    }
+    return await this.surveyService.surveyUpdatedById(id, createSurveyDto);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: '설문지 Delete', description: '설문지삭제' })
   async deletedSurveyById(@Param('id') id: string) {
-    try {
-      const survey = await this.surveyService.surveyDeletedById(id);
-      return survey;
-    } catch (err) {
-      throw new NotFoundException('Survey Not Found');
-    }
+    const survey = await this.surveyService.surveyDeletedById(id);
+    return survey;
   }
 }

@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { UpdateSurveyDto } from './dto/update-survey.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -49,12 +54,16 @@ export class SurveyService {
 
   //특정 설문지 불라오기
   async surveyGetById(id: string) {
-    const survey = await this.surveyRepository
-      .createQueryBuilder('survey')
-      .leftJoinAndSelect('survey.questions', 'questions')
-      .where('survey.id= :id', { id })
-      .getOne();
-    return survey;
+    try {
+      const survey = await this.surveyRepository
+        .createQueryBuilder('survey')
+        .leftJoinAndSelect('survey.questions', 'questions')
+        .where('survey.id= :id', { id })
+        .getOne();
+      return survey;
+    } catch (err) {
+      throw new NotFoundException('Survey Not Found');
+    }
   }
 
   async completeSurvey(pageOptionsDto: PageOptionsDto) {
@@ -86,12 +95,20 @@ export class SurveyService {
   }
 
   async surveyDeletedById(id: string) {
-    await this.surveyRepository.delete({ id });
-    return 'deleted survey';
+    try {
+      await this.surveyRepository.delete({ id });
+      return 'deleted survey';
+    } catch (err) {
+      throw new NotFoundException('Survey Not Found');
+    }
   }
 
   async surveyUpdatedById(id: string, createSurveyDto: CreateSurveyDto) {
-    await this.surveyRepository.update(id, createSurveyDto);
-    return 'updated survey';
+    try {
+      await this.surveyRepository.update(id, createSurveyDto);
+      return 'updated survey';
+    } catch (err) {
+      throw new NotFoundException('Survey Not Found');
+    }
   }
 }

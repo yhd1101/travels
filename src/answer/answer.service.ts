@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Answer } from './entities/answer.entity';
@@ -23,23 +28,32 @@ export class AnswerService {
     return newAnswer;
   }
   async getByAnswerId(id: string) {
-    const answer = await this.answerRepository.findOne({
-      where: { id },
-      relations: ['question', 'answer'],
-    });
-    if (!answer) {
-      throw new HttpException('No answer', HttpStatus.NOT_FOUND);
+    try {
+      const answer = await this.answerRepository.findOne({
+        where: { id },
+        relations: ['question', 'answer'],
+      });
+      return answer;
+    } catch (err) {
+      throw new NotFoundException('answer not found');
     }
-    return answer;
   }
 
   async updatedByAnswerId(id: string, updateAnswerDto: CreateAnswerDto) {
-    await this.answerRepository.update(id, updateAnswerDto);
-    return 'updated answer';
+    try {
+      await this.answerRepository.update(id, updateAnswerDto);
+      return 'updated answer';
+    } catch (err) {
+      throw new NotFoundException('answer not found');
+    }
   }
 
   async deleteByAnswer(id: string) {
-    await this.answerRepository.delete({ id });
-    return 'deleted answer';
+    try {
+      await this.answerRepository.delete({ id });
+      return 'deleted answer';
+    } catch (err) {
+      throw new NotFoundException('answer not found');
+    }
   }
 }

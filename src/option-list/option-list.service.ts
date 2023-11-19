@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateOptionListDto } from './dto/create-option-list.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OptionList } from './entities/option-list.entity';
@@ -26,26 +31,35 @@ export class OptionListService {
   }
 
   async getByOptionId(id: string) {
-    const option = await this.optionListRepository.findOne({
-      where: { id },
-      relations: ['question'],
-    });
-    if (!option) {
-      throw new HttpException('No option', HttpStatus.NOT_FOUND);
+    try {
+      const option = await this.optionListRepository.findOne({
+        where: { id },
+        relations: ['question'],
+      });
+      return option;
+    } catch (err) {
+      throw new NotFoundException('option not found');
     }
-    return option;
   }
 
   async deleteByOptionId(id: string) {
-    await this.optionListRepository.delete({ id });
-    return 'deleted option';
+    try {
+      await this.optionListRepository.delete({ id });
+      return 'deleted option';
+    } catch (err) {
+      throw new NotFoundException('option not found');
+    }
   }
 
   async updatedByOptionId(
     id: string,
     createOptionListDto: CreateOptionListDto,
   ) {
-    await this.optionListRepository.update(id, createOptionListDto);
-    return 'updated option';
+    try {
+      await this.optionListRepository.update(id, createOptionListDto);
+      return 'updated option';
+    } catch (err) {
+      throw new NotFoundException('option not found');
+    }
   }
 }

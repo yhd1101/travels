@@ -21,7 +21,7 @@ export class AnswerController {
   @ApiOperation({ summary: '정답' })
   async createAnswer(@Body() createAnswerDto: CreateAnswerDto) {
     const newAnswer = await this.answerService.createAnswer(createAnswerDto);
-    return createAnswerDto;
+    return newAnswer;
   }
 
   @Get()
@@ -34,12 +34,8 @@ export class AnswerController {
   @Get(':id')
   @ApiOperation({ summary: '정답 불러오기' })
   async getAnswer(@Param('id') id: string) {
-    try {
-      const answer = await this.answerService.getByAnswerId(id);
-      return answer;
-    } catch (err) {
-      throw new NotFoundException('answer not found');
-    }
+    const answer = await this.answerService.getByAnswerId(id);
+    return answer;
   }
 
   @Put(':id')
@@ -48,25 +44,17 @@ export class AnswerController {
     @Param('id') id: string,
     @Body() createAnswerDto: CreateAnswerDto,
   ) {
-    try {
-      const answer = await this.answerService.updatedByAnswerId(
-        id,
-        createAnswerDto,
-      );
-      return answer;
-    } catch (err) {
-      throw new NotFoundException('answer not found');
-    }
+    const answer = await this.answerService.updatedByAnswerId(
+      id,
+      createAnswerDto,
+    );
+    return answer;
   }
 
   @Delete(':id')
   @ApiOperation({ summary: '정답삭제' })
   async deleteAnswer(@Param('id') id: string) {
-    try {
-      const answer = await this.answerService.deleteByAnswer(id);
-      return answer;
-    } catch (err) {
-      throw new NotFoundException('answer not found');
-    }
+    const answer = await this.answerService.deleteByAnswer(id);
+    return answer;
   }
 }
