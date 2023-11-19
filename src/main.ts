@@ -8,15 +8,17 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import getLogLevels from './utills/getLogLevels';
 import * as process from 'process';
+import CustomLogger from './logger/customLogger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: getLogLevels(process.env.NODE_ENV === 'production'),
+    bufferLogs: true,
   });
 
   const configService = app.get(ConfigService);
   app.enableCors();
   app.setGlobalPrefix('api');
+  app.useLogger(app.get(CustomLogger));
 
   const config = new BaseApIDocument().initializeOptions();
   const document = SwaggerModule.createDocument(app, config);

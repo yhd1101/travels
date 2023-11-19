@@ -7,6 +7,7 @@ import { QuestionModule } from './question/question.module';
 import { AnswerModule } from './answer/answer.module';
 import { AppConfigModule } from './common/config/config.module';
 import { OptionListModule } from './option-list/option-list.module';
+import { LoggerModule } from './logger/logger.module';
 import LogsMiddleware from './utills/logs.middleware';
 
 @Module({
@@ -17,6 +18,7 @@ import LogsMiddleware from './utills/logs.middleware';
     QuestionModule,
     OptionListModule,
     AnswerModule,
+    LoggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
