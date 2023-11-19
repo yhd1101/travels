@@ -5,6 +5,8 @@
 ```
 docker compose up -d
 ```
+app.setGlobalPrefix('api') 모든전역 공통 api 설정해주었습니다
+ex)http://localhost:4000/api/question/create
 ### 사용기술
 - TypeScript
 - NestJS
@@ -62,12 +64,11 @@ docker compose up -d
 - Swagger 
 
 ### Swagger
-   <a href="2Fcb5afc2FUntitled.png?table=block&id=8d4a7b1c-9589-492c-8b00-e98c5907931c&spaceId=100b5a0e-959d-48b7-b9b7-a3b0472740e6&width=2000&userId=52657ad4-9c58-4d0e-aaf5-7723cf2ac8e9&cache=v2"><img src="https://file.notion.so/f/f/100b5a0e-959d-48b7-b9b7-a3b0472740e6/c09736cf-5d5a-41e3-ac24-1c77521f5b0e/Untitled.png?id=ddf62fd5-95e6-4df8-89d3-95be044f915d&table=block&spaceId=100b5a0e-959d-48b7-b9b7-a3b0472740e6&expirationTimestamp=1700388000000&signature=ohcZbbaBUSceooQceVek9v8QtFY_rvHmq3yGatrMxfY&downloadName=Untitled.png" width="500" alt="Swagger" /></a>
-- Swagger를 활용해여 설문지 api를 문서화 했습니다.
+   <a href="2Fcb5afc2FUntitled.png?table=block&id=8d4a7b1c-9589-492c-8b00-e98c5907931c&spaceId=100b5a0e-959d-48b7-b9b7-a3b0472740e6&width=2000&userId=52657ad4-9c58-4d0e-aaf5-7723cf2ac8e9&cache=v2"><img src="https://file.notion.so/f/f/100b5a0e-959d-48b7-b9b7-a3b0472740e6/fa97c35f-0bea-451d-8c6c-ab27e057ecc7/Untitled.png?id=6eb9e7d6-73f0-4016-87f4-43f7eb9fea5a&table=block&spaceId=100b5a0e-959d-48b7-b9b7-a3b0472740e6&expirationTimestamp=1700467200000&signature=8Sise_hXYKz_n1VJKoewV7OD-UfCeVqoRoVDTsgwWIg&downloadName=Untitled.png" width="500" alt="Swagger" /></a>
 
 
 ### ERD 설계
-  <a href="2Fcb5afc2FUntitled.png?table=block&id=8d4a7b1c-9589-492c-8b00-e98c5907931c&spaceId=100b5a0e-959d-48b7-b9b7-a3b0472740e6&width=2000&userId=52657ad4-9c58-4d0e-aaf5-7723cf2ac8e9&cache=v2"><img src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F100b5a0e-959d-48b7-b9b7-a3b0472740e6%2F853cb7d1-6b7f-4e00-9de4-8d30e4138de7%2FUntitled.png?table=block&id=2354d251-8e98-4d9c-b4c1-e5f9e36c9bbb&spaceId=100b5a0e-959d-48b7-b9b7-a3b0472740e6&width=2000&userId=52657ad4-9c58-4d0e-aaf5-7723cf2ac8e9&cache=v2" width="300" alt="ERD" /></a>
+  <a href="2Fcb5afc2FUntitled.png?table=block&id=8d4a7b1c-9589-492c-8b00-e98c5907931c&spaceId=100b5a0e-959d-48b7-b9b7-a3b0472740e6&width=2000&userId=52657ad4-9c58-4d0e-aaf5-7723cf2ac8e9&cache=v2"><img src="https://file.notion.so/f/f/100b5a0e-959d-48b7-b9b7-a3b0472740e6/7764656a-0549-43a5-bab7-9d9171dc4db5/Untitled.png?id=722e77bc-d489-4097-ad45-6a8dc644c609&table=block&spaceId=100b5a0e-959d-48b7-b9b7-a3b0472740e6&expirationTimestamp=1700467200000&signature=nDtzjM5aIc6IyIMsLIDZVgCCH7LHGMIfGESLHR06ppU&downloadName=Untitled.png" width="300" alt="ERD" /></a>
 
 
 
