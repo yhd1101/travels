@@ -3,7 +3,7 @@
 
 ## 실행설명
 ```
-docker compose up -d
+docker-compose up -d
 ```
 app.setGlobalPrefix('api') 모든전역 공통 api 설정해주었습니다
 ex)http://localhost:4000/api/question/create
